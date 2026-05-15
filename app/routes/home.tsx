@@ -49,7 +49,7 @@ export default function Home() {
               <p>Supports JPG, PNG, formats up to 10MB</p>
             </div>
 
-            <Upload />
+            <Upload onComplete={() => console.log("upload completed")} />
 
 
           </div>
