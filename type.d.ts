@@ -11,3 +11,10 @@ type AuthContext = {
     signIn: () => Promise<boolean>, 
     signOut: () => Promise<boolean>, 
 }
+
+interface StoreHostedImageParams {
+    hosting: HostingConfig | null;
+    url: string;
+    projectId: string;
+    label: "source" | "rendered";
+}
