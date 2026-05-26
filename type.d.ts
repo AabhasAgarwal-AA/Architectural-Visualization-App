@@ -3,29 +3,13 @@ interface AuthState{
     userName: string | null, 
     userId: string | null 
 }
-type AuthContext = {
-    isSignedIn: boolean,
-    userName: string | null,
-    userId: string | null, 
-    refreshAuth: () => Promise<boolean>, 
-    signIn: () => Promise<boolean>, 
-    signOut: () => Promise<boolean>, 
-}
 
-type AuthRequiredModalProps = {
-    isOpen: boolean;
-    onConfirm: () => void;
-    onCancel: () => void;
-    title?: string;
-    description?: string;
-    confirmLabel?: string;
-};
-
-interface StoreHostedImageParams {
-    hosting: HostingConfig | null;
-    url: string;
-    projectId: string;
-    label: "source" | "rendered";
+interface Material {
+    id: string;
+    name: string;
+    thumbnail: string;
+    type: "color" | "texture";
+    category: "floor" | "wall" | "furniture";
 }
 
 interface DesignItem {
@@ -41,24 +25,6 @@ interface DesignItem {
     sharedBy?: string | null;
     sharedAt?: string | null;
     isPublic?: boolean;
-}
-
-interface CreateProjectParams {
-    item: DesignItem;
-    visibility?: "private" | "public";
-}
-
-interface Generate3DViewParams {
-    sourceImage: string;
-    projectId?: string | null;
-}
-
-interface Material {
-    id: string;
-    name: string;
-    thumbnail: string;
-    type: "color" | "texture";
-    category: "floor" | "wall" | "furniture";
 }
 
 interface DesignConfig {
@@ -101,6 +67,7 @@ interface VisualizerProps {
     canUnshare?: boolean;
 }
 
+
 interface UploadProps {
     onComplete: (base64File: string) => Promise<boolean | void> | boolean | void;
     className?: string;
@@ -119,8 +86,46 @@ interface CardProps {
     action?: React.ReactNode;
 }
 
+type AuthContext = {
+    isSignedIn: boolean,
+    userName: string | null,
+    userId: string | null, 
+    refreshAuth: () => Promise<boolean>, 
+    signIn: () => Promise<boolean>, 
+    signOut: () => Promise<boolean>, 
+}
+
+type AuthRequiredModalProps = {
+    isOpen: boolean;
+    onConfirm: () => void;
+    onCancel: () => void;
+    title?: string;
+    description?: string;
+    confirmLabel?: string;
+};
+
+
 type ShareAction = "share" | "unshare";
 type ShareStatus = "idle" | "saving" | "done";
 
+
 type HostingConfig = { subdomain: string };
 type HostedAsset = { url: string };
+
+interface StoreHostedImageParams {
+    hosting: HostingConfig | null;
+    url: string;
+    projectId: string;
+    label: "source" | "rendered";
+}
+
+interface CreateProjectParams {
+    item: DesignItem;
+    visibility?: "private" | "public";
+}
+
+interface Generate3DViewParams {
+    sourceImage: string;
+    projectId?: string | null;
+}
+

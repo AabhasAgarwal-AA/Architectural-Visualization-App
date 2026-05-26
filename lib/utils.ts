@@ -4,8 +4,10 @@ export const HOSTING_DOMAIN_SUFFIX = ".puter.site";
 
 export const createHostingSlug = () => `roomie-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`; 
 
-export const isHostedUrl = (value: unknown): value is string => typeof value === "string" && value.includes(HOSTING_DOMAIN_SUFFIX || "");
+export const isHostedUrl = (value: unknown): value is string => typeof value === "string" && value.includes(HOSTING_DOMAIN_SUFFIX);
 
+// export const isHostedUrl = (value: unknown): value is string =>
+//     typeof value === "string" && value.includes(HOSTING_DOMAIN_SUFFIX);
 
 const normalizeHost = (subdomain: string) =>
     subdomain.endsWith(HOSTING_DOMAIN_SUFFIX || "") ? subdomain : `${subdomain}${HOSTING_DOMAIN_SUFFIX}`;

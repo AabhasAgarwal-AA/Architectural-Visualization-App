@@ -24,17 +24,15 @@ export const createProject = async ({ item, visibility = "private" }: CreateProj
     const hosting = await getOrCreateHostingConfig();
     const hostedSource = projectId ? 
     await uploadImageToHosting({
-        // @ts-ignore
         hosting, url: item.sourceImage, projectId, label: 'source'
         }) : null; 
     
     const hostedRender = projectId && item.renderedImage ? 
         await uploadImageToHosting({
-            // @ts-ignore
             hosting, url: item.renderedImage, projectId, label: 'rendered'
         }) : null; 
     
-    const resolvedSource = hostedSource?.url || (isHostedUrl(item.sourceImage)) ? item.sourceImage : "";
+    const resolvedSource = hostedSource?.url || (isHostedUrl(item.sourceImage) ? item.sourceImage : "");
 
     if(!resolvedSource){
         console.error("Failed to host source image, skipping save.");
@@ -90,13 +88,13 @@ export const getProjects = async () => {
     }
 
     try {
-        const respose = await puter.workers.exec(`${PUTER_WORKER_URL}/api/projects/list`, {method: 'GET'});
-        if(!respose.ok){
-            console.log("Filed to fetch history", await respose.text());
+        const response = await puter.workers.exec(`${PUTER_WORKER_URL}/api/projects/list`, { method: 'GET' });
+        if (!response.ok){
+            console.log("Filed to fetch history", await response.text());
             return [];
         }
 
-        const data = (await respose.json()) as {projects?: DesignItem[] | null};
+        const data = (await response.json()) as {projects?: DesignItem[] | null};
         return Array.isArray(data?.projects) ? data?.projects : [];
 
     } catch (error) {
@@ -106,22 +104,17 @@ export const getProjects = async () => {
 
 }
 
-
 export const getProjectById = async ({ id }: { id: string }) => {
     if (!PUTER_WORKER_URL) {
         console.warn("Missing Puter worker url, skip history fetch");
         return null;
     }
 
-    // console.log("Fetching project with ID:", id);
-
     try {
         const response = await puter.workers.exec(
             `${PUTER_WORKER_URL}/api/projects/get?id=${encodeURIComponent(id)}`,
             { method: "GET" },
         );
-
-        // console.log("Fetch project response:", response);
 
         if (!response.ok) {
             console.error("Failed to fetch project:", await response.text());
@@ -131,8 +124,6 @@ export const getProjectById = async ({ id }: { id: string }) => {
         const data = (await response.json()) as {
             project?: DesignItem | null;
         };
-
-        // console.log("Fetched project data:", data);
 
         return data?.project ?? null;
     } catch (error) {

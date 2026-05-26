@@ -1,28 +1,24 @@
 import puter from "@heyputer/puter.js";
 import { createHostingSlug, fetchBlobFromUrl, getHostedUrl, getImageExtension, HOSTING_CONFIG_KEY, imageUrlToPngBlob, isHostedUrl } from "./utils";
 
-type HostingConfig = {subDomain: string};
-type HostedAsset = {url: string};
+export const getOrCreateHostingConfig = async (): Promise<HostingConfig | null> => {
+    const existing = (await puter.kv.get(HOSTING_CONFIG_KEY)) as HostingConfig | null;
 
-export const getOrCreateHostingConfig = async (): Promise <HostingConfig | null> => {
+    if (existing?.subdomain) return { subdomain: existing.subdomain };
 
-    const existing = (await puter.kv.get(HOSTING_CONFIG_KEY || "")) as HostingConfig | null; 
-    if(existing?.subDomain)
-        return {
-        subDomain: existing.subDomain
-    }; 
-
-    const subDomain = createHostingSlug();
+    const subdomain = createHostingSlug();
 
     try {
-        const created = await puter.hosting.create(subDomain, '.');
-        const record = {subDomain: created.subdomain};
-        await puter.kv.set(HOSTING_CONFIG_KEY || "", record);
-        
-        return record; 
-    } catch (error){
-        console.error(`Could not find sub-domain: ${error}`);
-        return null; 
+        const created = await puter.hosting.create(subdomain, '.');
+
+        const record = { subdomain: created.subdomain };
+
+        await puter.kv.set(HOSTING_CONFIG_KEY, record);
+
+        return record;
+    } catch (e) {
+        console.error(`Could not find subdomain: ${e}`);
+        return null;
     }
 }
 
