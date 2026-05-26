@@ -1,6 +1,6 @@
 
-export const HOSTING_CONFIG_KEY = process.env.HOSTING_CONFIG_KEY;
-export const HOSTING_DOMAIN_SUFFIX = process.env.HOSTING_DOMAIN_SUFFIX;
+export const HOSTING_CONFIG_KEY = "roomie_hosting_config";
+export const HOSTING_DOMAIN_SUFFIX = ".puter.site";
 
 export const createHostingSlug = () => `roomie-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`; 
 

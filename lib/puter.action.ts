@@ -23,12 +23,14 @@ export const createProject = async ({ item, visibility = "private" }: CreateProj
     const projectId = item.id; 
     const hosting = await getOrCreateHostingConfig();
     const hostedSource = projectId ? 
-        await uploadImageToHosting({
-            hosting, url: item.sourceImage, projectId, label: 'source'
+    await uploadImageToHosting({
+        // @ts-ignore
+        hosting, url: item.sourceImage, projectId, label: 'source'
         }) : null; 
     
     const hostedRender = projectId && item.renderedImage ? 
         await uploadImageToHosting({
+            // @ts-ignore
             hosting, url: item.renderedImage, projectId, label: 'rendered'
         }) : null; 
     
